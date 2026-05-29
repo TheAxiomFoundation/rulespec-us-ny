@@ -2,32 +2,40 @@
   "applied_files": [
     {
       "path": "regulations/18-nycrr/387/14/a/5.yaml",
-      "sha256": "3c09c5cc681372e668027bcc64b9cab75f3d6d59347562c47a335463d145edec"
+      "sha256": "caaaabee8933b336e8503d41fbb938c3b781b0e052901664050d443b47b372f4"
     },
     {
       "path": "regulations/18-nycrr/387/14/a/5.test.yaml",
-      "sha256": "05a4891833028e4331df73cac124669c77834bbfdb2882a0dda94c5b57aa0e6c"
+      "sha256": "d8b0da9ddd641e98f007f68c70bd98884dee64d04b7d254572312260c8b48ff1"
     }
   ],
-  "axiom_encode_version": "0.2.64",
+  "axiom_encode_git": {
+    "commit": "2ff8a5b32c4c980a072f45eb26c80e4916d8182c",
+    "dirty_tracked": false,
+    "root": "/Users/pavelmakarchuk/axiom-encode",
+    "version": "0.2.433",
+    "version_commit": "2ff8a5b32c4c980a072f45eb26c80e4916d8182c"
+  },
+  "axiom_encode_version": "0.2.433",
   "backend": "codex",
-  "citation": "18 NYCRR 387.14(a)(5) companion-test coverage repair",
-  "context_manifest_file": null,
-  "context_manifest_sha256": null,
-  "generated_at": "2026-05-10T22:11:38.805661+00:00",
-  "generated_output_file": null,
-  "generated_output_root": null,
-  "generated_output_sha256": null,
+  "citation": "us-ny/regulation/18-nycrr/387/14/a/5",
+  "context_manifest_file": "/tmp/encode-ny-387-14-a-5-conceptfix-apply/_eval_workspaces/codex-gpt-5.5/us-ny-regulation-18-nycrr-387-14-a-5/workspace/context-manifest.json",
+  "context_manifest_sha256": "f9a741f18cab9c46844a47e1dbfba14e4a91bcc445bd85271c8b7182bd102b44",
+  "generated_at": "2026-05-29T23:02:14.121491+00:00",
+  "generated_output_file": "/tmp/encode-ny-387-14-a-5-conceptfix-apply/codex-gpt-5.5/regulations/18-nycrr/387/14/a/5.yaml",
+  "generated_output_root": "/tmp/encode-ny-387-14-a-5-conceptfix-apply",
+  "generated_output_sha256": "caaaabee8933b336e8503d41fbb938c3b781b0e052901664050d443b47b372f4",
+  "generation_prompt_sha256": "b10bcfeb70446c495a96d431eb4032447ce3a65ae852b3c12bec1ca9d781a96d",
   "model": "gpt-5.5",
-  "run_id": null,
-  "runner": "codex:gpt-5.5",
+  "run_id": "a21687b2",
+  "runner": "codex-gpt-5.5",
   "schema_version": "axiom-encode/applied-rulespec/v1",
   "signature": {
     "algorithm": "hmac-sha256",
     "key_id": "axiom-encode-apply-v1",
-    "value": "08bcf72dc7c3b1980e973fa996ead11fa306e2b8d8d04d05aa9be1adae3bdfe6"
+    "value": "40439e78d2649ef8cafd4c4a6f967cd5dcb934893efc71b57a669d9a850f7166"
   },
-  "tool": "codex-assisted axiom-encode apply manifest",
-  "trace_file": null,
-  "trace_sha256": null
+  "tool": "axiom-encode encode --apply",
+  "trace_file": "/tmp/encode-ny-387-14-a-5-conceptfix-apply/traces/codex-gpt-5.5/us-ny-regulation-18-nycrr-387-14-a-5.json",
+  "trace_sha256": "375ad620b923301fe5f8c3d096fecf09cd66574a42486cb92aa16676985c8948"
 }
