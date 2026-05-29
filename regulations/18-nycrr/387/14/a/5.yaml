@@ -69,6 +69,15 @@ rules:
     versions:
       - effective_from: '2025-10-01'
         formula: snap_net_income_limit_100_percent_fpl_48_states_dc * ny_snap_categorical_eligibility_150_percent_fpl_ratio
+  - name: ny_snap_member_elderly_or_disabled
+    kind: derived
+    entity: Person
+    dtype: Judgment
+    period: Month
+    source: 18 NYCRR 387.14(a)(5)(i)(b)
+    versions:
+      - effective_from: '2025-10-01'
+        formula: snap_member_is_elderly_or_disabled
   - name: ny_snap_elderly_disabled_categorically_eligible
     kind: derived
     entity: Household
@@ -78,7 +87,7 @@ rules:
     versions:
       - effective_from: '2025-10-01'
         formula: |-
-          snap_household_has_elderly_or_disabled_member
+          count_where(member_of_household, ny_snap_member_elderly_or_disabled) > 0
           and snap_gross_monthly_income <= ny_snap_categorical_gross_income_limit_200_percent_fpl
   - name: ny_snap_dependent_care_categorically_eligible
     kind: derived
