@@ -4,36 +4,17 @@ module:
     required: true
   source_verification:
     corpus_citation_path: us-ny/regulation/18-nycrr/387/14/a/5
-  deferred_outputs:
-    - output: us-ny:regulations/18-nycrr/387/14/a/5#ny_snap_categorically_eligible
-      reason: >-
-        Final categorical eligibility must combine the clause (a) through (e)
-        paths with the no-circumstances disqualifications and the exclusion of
-        ineligible individuals. The work-requirement disqualification depends on
-        section 385.3 of this Title, which is not available in copied RuleSpec
-        context.
-    - output: us-ny:regulations/18-nycrr/387/14/a/5#snap_categorically_eligible_for_resource_exemption
-      reason: >-
-        The resource-limit presumption applies only to final categorically
-        eligible households, and final categorical eligibility is blocked by the
-        missing section 385.3 work-requirement disqualification dependency.
-    - output: us-ny:regulations/18-nycrr/387/14/a/5#snap_income_limit_exemption_for_categorically_eligible_household
-      reason: >-
-        The gross and net income-limit exemption applies only to final
-        categorically eligible households, and final categorical eligibility is
-        blocked by the missing section 385.3 work-requirement disqualification
-        dependency.
   summary: |-
     Categorically eligible households are exempted from gross and net income limits and presumed to meet resource limits. Clause (a) covers households in which all members are recipients of family assistance, nonemergency safety net assistance and/or SSI benefits, including authorized-but-unpaid, suspended or recouped, and under-$10 grant cases. Clauses (b)-(e) cover elderly or disabled member households at 200 percent FPL, dependent-care households at 200 percent FPL, earned-income households at 150 percent FPL, and residual households at 130 percent FPL, subject to disqualification and ineligible-individual exclusions.
 imports:
-  - us:statutes/7/2012/j#snap_household_has_elderly_or_disabled_member
+  - us:statutes/7/2012/j
   - us:regulations/7-cfr/273/10#snap_total_gross_income
   - us:policies/usda/snap/fy-2026-cola/income-eligibility-standards#snap_net_income_limit_100_percent_fpl_48_states_dc
 rules:
-  - name: member_of_household
+  - name: ny_snap_categorical_member_of_household
     kind: data_relation
     data_relation:
-      predicate: member_of_household
+      predicate: ny_snap_categorical_member_of_household
       arity: 2
       arguments:
         - Person
@@ -161,8 +142,8 @@ rules:
     versions:
       - effective_from: '2025-10-01'
         formula: |-
-          len(member_of_household) > 0
-          and count_where(member_of_household, member_has_family_assistance_nonemergency_safety_net_or_ssi_categorical_status) == len(member_of_household)
+          len(ny_snap_categorical_member_of_household) > 0
+          and count_where(ny_snap_categorical_member_of_household, member_has_family_assistance_nonemergency_safety_net_or_ssi_categorical_status) == len(ny_snap_categorical_member_of_household)
 
   - name: relates_all_member_pa_ssi_status_to_federal_regular_categorical_eligibility
     kind: source_relation
@@ -424,3 +405,75 @@ rules:
           and not ny_snap_elderly_disabled_200_percent_categorical_path_satisfied
           and not ny_snap_dependent_care_200_percent_categorical_path_satisfied
           and not ny_snap_earned_income_150_percent_categorical_path_satisfied
+
+  - name: ny_snap_categorically_eligible
+    kind: derived
+    entity: Household
+    dtype: Judgment
+    period: Month
+    source: us-ny/regulation/18-nycrr/387/14/a/5(i)-(iii)
+    metadata:
+      proof:
+        atoms:
+          - path: versions[0].formula
+            kind: formula
+            source:
+              corpus_citation_path: us-ny/regulation/18-nycrr/387/14/a/5
+          - path: versions[0].formula
+            kind: exception
+            source:
+              corpus_citation_path: us-ny/regulation/18-nycrr/387/14/a/5
+              excerpt: Under no circumstances can any household be considered categorically eligible for SNAP if any member of that household is disqualified
+    versions:
+      - effective_from: '2025-10-01'
+        formula: |-
+          (
+            ny_snap_all_members_public_assistance_categorical_path_satisfied
+            or ny_snap_elderly_disabled_200_percent_categorical_path_satisfied
+            or ny_snap_dependent_care_200_percent_categorical_path_satisfied
+            or ny_snap_earned_income_150_percent_categorical_path_satisfied
+            or ny_snap_residual_130_percent_categorical_path_satisfied
+          )
+          and not household_member_disqualified_for_intentional_program_violation
+          and not household_member_disqualified_for_failure_to_comply_with_periodic_reporting_requirements
+          and not household_member_disqualified_for_failure_to_comply_with_work_requirements
+          and not household_member_ineligible_to_participate_in_snap
+
+  - name: snap_categorically_eligible_for_resource_exemption
+    kind: derived
+    entity: Household
+    dtype: Judgment
+    period: Month
+    source: us-ny/regulation/18-nycrr/387/14/a/5(i)
+    metadata:
+      proof:
+        atoms:
+          - path: versions[0].formula
+            kind: formula
+            source:
+              corpus_citation_path: us-ny/regulation/18-nycrr/387/14/a/5
+              excerpt: Categorically eligible households are presumed, without further investigation or verification, to meet the resource limits
+    versions:
+      - effective_from: '2025-10-01'
+        formula: |-
+          ny_snap_categorically_eligible
+
+  - name: snap_income_limit_exemption_for_categorically_eligible_household
+    kind: derived
+    entity: Household
+    dtype: Judgment
+    period: Month
+    source: us-ny/regulation/18-nycrr/387/14/a/5(i)
+    metadata:
+      proof:
+        atoms:
+          - path: versions[0].formula
+            kind: formula
+            source:
+              corpus_citation_path: us-ny/regulation/18-nycrr/387/14/a/5
+              excerpt: Categorically eligible households are exempted from the gross and net income limits
+    versions:
+      - effective_from: '2025-10-01'
+        formula: |-
+          ny_snap_categorically_eligible
+
